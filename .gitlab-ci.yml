@@ -56,5 +56,5 @@ deploy:
   when: manual
   script:
     - docker-compose -f docker-compose.deploy.yml  down
-   # - docker volume rm day-5_frontend || true
+    - docker volume rm motion-team-php_frontend || true
     - docker-compose -f docker-compose.deploy.yml  up -d
