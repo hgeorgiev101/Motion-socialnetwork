@@ -9,5 +9,5 @@ urlpatterns = [
     path('toggle-like/<int:post_id>/', ToggleLikePostView.as_view()),
     path('likes/', ListLikedPostsByCurrentUserView.as_view()),
     path('following/', ListCurrentUserPostsOfFollowingView.as_view()),
-    path('user/<int:user_id>/', ListPostsByUserIdView.as_view())
+    path('user/<int:user_id>/', ListPostsByUserIdView.as_view()),
 ]
