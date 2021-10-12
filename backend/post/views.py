@@ -1,7 +1,7 @@
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from post.models import Post
 from post.permissions import IsOwnerOrAdminOrReadOnly
@@ -18,7 +18,6 @@ class ListCreatePostsView( ListCreateAPIView ):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
