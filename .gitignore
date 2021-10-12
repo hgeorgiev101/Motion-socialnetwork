@@ -225,3 +225,6 @@ db.*
 */*/__pycache__/
 
 */__pycache__/
+
+media-files
+static-files
