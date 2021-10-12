@@ -11,4 +11,4 @@ dependencies:
       - gunicorn==20.1.0
       - flake8==3.9.2
       - pillow==8.2.0
-      - PyJWT==2.1.0
+      - pyjwt==2.1.0
