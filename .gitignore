@@ -210,3 +210,24 @@ venv/
 backend/media-files
 
 # End of https://www.gitignore.io/api/macos,linux,django,python,pycharm
+
+.idea
+__pycache__
+*.pyc
+*.sqlite*
+db.*
+
+*.log
+
+*.pot
+
+
+*.pyc
+*/*/*/__pycache__/
+
+*/*/__pycache__/
+
+*/__pycache__/
+
+media-files
+static-files
