@@ -207,6 +207,6 @@ venv/
 /site
 
 # media-files
-/backend/media-files
+backend/media-files
 
 # End of https://www.gitignore.io/api/macos,linux,django,python,pycharm
