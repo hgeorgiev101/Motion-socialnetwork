@@ -20,6 +20,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt import views as jwt_views
 from user.views import ListAllUsersView
+from user.views import SpecificUserView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -35,6 +36,7 @@ urlpatterns = [
     path('backend/admin/', admin.site.urls),
     path('backend/api/social/posts/', include('post.urls')),
     path('backend/api/users/', ListAllUsersView.as_view()),
+    path('backend/api/users/<int:user_id>/', SpecificUserView.as_view()),
     path('backend/api/social/followers/', include('user.urls')),
     path('backend/api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('backend/api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

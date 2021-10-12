@@ -1,8 +1,8 @@
-from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from user.models import User
-from user.serializers import UserSerializer
+from user.serializers import UserSerializer, ProfileSerializer
 from rest_framework.response import Response
 
 
@@ -10,9 +10,16 @@ class ListAllUsersView(ListAPIView):
     """
     get:
     List all users
+    search: filter
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def get_queryset(self):
+        search_string = self.request.query_params.get('search')
+        if search_string:
+            return User.objects.filter(username__icontains=search_string)
+        return User.objects.all()
 
 
 class ToggleFollowUserView(GenericAPIView):
@@ -57,3 +64,13 @@ class ListLoggedInUserFollowers(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return User.objects.filter(following__exact=user)
+
+
+class SpecificUserView(RetrieveAPIView):
+    """
+    get:
+    Get specific user profile
+    """
+    queryset = User.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_url_kwarg = 'user_id'
