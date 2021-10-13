@@ -29,6 +29,10 @@ class RegistrationProfile(models.Model):
 
     @receiver(post_save, sender=User)
     def create_registration_profile(sender, instance, **kwargs):
-        profile = RegistrationProfile.objects.get(email=instance.email)
-        profile.status = 2
-        profile.save()
+        profile, created = RegistrationProfile.objects.get_or_create(email=instance.email)
+        if created:
+            profile.status = 2
+            profile.save()
+        else:
+            profile.status = 2
+            profile.save()
