@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
-import ast
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +24,7 @@ SECRET_KEY = 'django-insecure-!t!oej#hj5!!dod93vzr8e)8ln=b*jmg%1j63s^w8$#rujgw-4
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = ast.literal_eval(os.environ.get('DJANGO_DEBUG'))
+DEBUG = os.environ.get('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = ['165.22.81.142', 'backend', '127.0.0.1']
 
@@ -174,3 +173,11 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+# Email settings
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
