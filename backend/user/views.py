@@ -74,3 +74,24 @@ class SpecificUserView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     lookup_url_kwarg = 'user_id'
+
+
+class RetrieveUpdateProfileView(GenericAPIView):
+    """
+    get:
+    Get own profile
+    patch:
+    Update own profile
+    """
+    serializer_class = ProfileSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        return Response(self.get_serializer(user).data)
+
+    def patch(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        serializer = ProfileSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user_id=user, **serializer.validated_data)
+        return Response(serializer.validated_data)
