@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from user.models import User
 from post.models import Post
@@ -37,4 +38,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'following', 'followers', 'job', 'avatar', 'banner', 'location', 'about_me',
                   'things_user_likes', 'followers_count', 'following_count', 'posts_of_count']
         # read_only_fields = []
-#need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
+
+
+# need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # The default result (access/refresh tokens)
+        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
+        # Custom data you want to include
+        data.update({'user': ProfileSerializer(self.user, many=False).data})
+        return data

@@ -22,7 +22,7 @@ from rest_framework import permissions
 from rest_framework_simplejwt import views as jwt_views
 
 from project import settings
-from user.views import ListAllUsersView, RetrieveUpdateProfileView
+from user.views import ListAllUsersView, RetrieveUpdateProfileView, CustomTokenObtainPairView
 from user.views import SpecificUserView
 
 schema_view = get_schema_view(
@@ -42,7 +42,7 @@ urlpatterns = [
     path('backend/api/users/<int:user_id>/', SpecificUserView.as_view()),
     path('backend/api/users/me/', RetrieveUpdateProfileView.as_view()),
     path('backend/api/social/followers/', include('user.urls')),
-    path('backend/api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('backend/api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('backend/api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('backend/api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
     path('backend/api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

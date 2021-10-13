@@ -12,3 +12,4 @@ dependencies:
       - flake8==3.9.2
       - pillow==8.2.0
       - pyjwt==2.1.0
+      - django-cors-headers==3.10.0

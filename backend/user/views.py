@@ -1,8 +1,9 @@
 from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from user.models import User
-from user.serializers import UserSerializer, ProfileSerializer
+from user.serializers import UserSerializer, ProfileSerializer, CustomTokenObtainPairSerializer
 from rest_framework.response import Response
 
 
@@ -95,3 +96,8 @@ class RetrieveUpdateProfileView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(user_id=user, **serializer.validated_data)
         return Response(serializer.validated_data)
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    # Replace the serializer with your custom
+    serializer_class = CustomTokenObtainPairSerializer
