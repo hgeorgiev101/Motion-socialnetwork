@@ -45,6 +45,7 @@ urlpatterns = [
     path('backend/api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('backend/api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
     path('backend/api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('backend/api/auth/registration/', include('registration_profile.urls')),
     path('backend/api/social/comments/', include('comment.urls')),
 ]
 
