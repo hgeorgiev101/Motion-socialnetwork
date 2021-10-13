@@ -22,6 +22,5 @@ class User(AbstractUser):
     things_user_likes = models.ManyToManyField(to=Interest, blank=True, related_name='liked_things')
 
 
-
     def __str__(self):
         return self.email

@@ -15,3 +15,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'is_followed_by_me']
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'following', 'followers', 'job', 'avatar', 'banner', 'location', 'about_me',
+                  'things_user_likes']
+        # read_only_fields = []

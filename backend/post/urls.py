@@ -2,6 +2,9 @@ from django.urls import path
 
 from post.views import ListCreatePostsView, RetrieveUpdateDeletePostView, ToggleLikePostView, \
     ListLikedPostsByCurrentUserView, ListPostsByUserIdView, ListCurrentUserPostsOfFollowingView
+from django.conf.urls.static import static
+
+from project import settings
 
 urlpatterns = [
     path('', ListCreatePostsView.as_view()),
@@ -9,5 +12,5 @@ urlpatterns = [
     path('toggle-like/<int:post_id>/', ToggleLikePostView.as_view()),
     path('likes/', ListLikedPostsByCurrentUserView.as_view()),
     path('following/', ListCurrentUserPostsOfFollowingView.as_view()),
-    path('user/<int:user_id>/', ListPostsByUserIdView.as_view())
+    path('user/<int:user_id>/', ListPostsByUserIdView.as_view()),
 ]
