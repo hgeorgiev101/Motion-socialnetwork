@@ -5,8 +5,9 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
-from registration_profile.models import RegistrationProfile
-from registration_profile.serializers import RegistrationSerializer, RegistrationValidationSerializer
+from registration_profile.models import RegistrationProfile, code_generator
+from registration_profile.serializers import RegistrationSerializer, RegistrationValidationSerializer, \
+    PasswordResetSerializer, PasswordResetValidationSerializer
 
 User = get_user_model()
 
@@ -36,11 +37,51 @@ class ValidateCreateRegistrationView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = User(email=serializer.validated_data['email'],
+                        password=make_password(serializer.validated_data['password']),
+                        username=serializer.validated_data['username'],
+                        first_name=serializer.validated_data['first_name'],
+                        last_name=serializer.validated_data['last_name'])
+            user.save()
+            return Response(status.HTTP_200_OK)
+
+
+class PasswordResetView(GenericAPIView):
+    serializer_class = PasswordResetSerializer
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = User(email=request.data['email'],
-                    password=make_password(request.data['password']),
-                    username=request.data['username'],
-                    first_name=request.data['first_name'],
-                    last_name=request.data['last_name'])
-        user.save()
+        instance = RegistrationProfile.objects.get(email=request.data['email'])
+        instance.code = code_generator()
+        instance.save()
+        send_mail(
+            'Your password reset code!',
+            f'Here is your password reset code:\n{instance.code}',
+            'propulsionteamphp@gmail.com',
+            [request.data['email']],
+            fail_silently=False,
+        )
         return Response(status.HTTP_200_OK)
+
+
+class PasswordResetValidationView(GenericAPIView):
+    serializer_class = PasswordResetValidationSerializer
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = User.objects.get(email=serializer.validated_data['email'])
+            user.password = make_password(serializer.validated_data['password'])
+            user.save()
+            send_mail(
+                'Password reset',
+                'Your password was successfully reset\nCongratulations!!!',
+                'propulsionteamphp@gmail.com',
+                [request.data['email']],
+                fail_silently=False,
+            )
+            return Response(status.HTTP_200_OK)
