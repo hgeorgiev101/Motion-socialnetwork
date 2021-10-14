@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'post',
     'comment',
     'friend_request',
-    'interest',
     'registration_profile',
 
     # 3RD PARTY
