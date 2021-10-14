@@ -229,5 +229,7 @@ db.*
 
 */__pycache__/
 
+*/migrations/*
+
 media-files
 static-files
