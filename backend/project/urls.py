@@ -22,7 +22,8 @@ from rest_framework import permissions
 from rest_framework_simplejwt import views as jwt_views
 
 from project import settings
-from user.views import ListAllUsersView
+from user.views import ListAllUsersView, RetrieveUpdateProfileView, CustomTokenObtainPairView
+from user.views import SpecificUserView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -38,11 +39,14 @@ urlpatterns = [
     path('backend/admin/', admin.site.urls),
     path('backend/api/social/posts/', include('post.urls')),
     path('backend/api/users/', ListAllUsersView.as_view()),
+    path('backend/api/users/<int:user_id>/', SpecificUserView.as_view()),
+    path('backend/api/users/me/', RetrieveUpdateProfileView.as_view()),
     path('backend/api/social/followers/', include('user.urls')),
-    path('backend/api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('backend/api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('backend/api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
+    path('backend/api/auth/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('backend/api/auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('backend/api/auth/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
     path('backend/api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('backend/api/auth/', include('registration_profile.urls')),
     path('backend/api/social/comments/', include('comment.urls')),
 
     path('backend/api/friends/', include('friend_request.urls')),

@@ -18,7 +18,6 @@ class ListCreatePostsView( ListCreateAPIView ):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
 
-
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         search_string = self.request.query_params.get( 'search' )
