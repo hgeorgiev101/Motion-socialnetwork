@@ -19,8 +19,7 @@ class User(AbstractUser):
     banner = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
     location = models.CharField(max_length=50, blank=True, null=True)
     about_me = models.CharField(max_length=1000, blank=True, null=True)
-    things_user_likes = ArrayField(models.CharField(max_length=20), blank=True, null=True, size = 10)
-    # things_user_likes = models.ManyToManyField(to=Interest, blank=True, related_name='liked_things')
+    things_user_likes = ArrayField(models.CharField(max_length=20), blank=True, null=True, size=10)
 
     def __str__(self):
         return self.email

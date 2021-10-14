@@ -8,7 +8,7 @@ from post.permissions import IsOwnerOrAdminOrReadOnly
 from post.serializers import PostSerializer
 
 
-class ListCreatePostsView( ListCreateAPIView ):
+class ListCreatePostsView(ListCreateAPIView):
     """
     get:
     List all posts. No authorization needed
@@ -20,21 +20,21 @@ class ListCreatePostsView( ListCreateAPIView ):
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        search_string = self.request.query_params.get( 'search' )
+        search_string = self.request.query_params.get('search')
         if search_string:
             queryset = queryset.filter(
-                Q( text_content__icontains=search_string ) | Q( external_link__icontains=search_string ) )
-        serializer = self.get_serializer( queryset, many=True )
-        return Response( serializer.data )
+                Q(text_content__icontains=search_string) | Q(external_link__icontains=search_string))
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer( data=request.data )
-        serializer.is_valid( raise_exception=True )
-        serializer.save( author=self.request.user, liked_by='' )
-        return Response( serializer.data, status=status.HTTP_201_CREATED )
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(author=self.request.user, liked_by='')
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class RetrieveUpdateDeletePostView( RetrieveUpdateDestroyAPIView ):
+class RetrieveUpdateDeletePostView(RetrieveUpdateDestroyAPIView):
     """
     get:
     List a post by id
@@ -49,7 +49,7 @@ class RetrieveUpdateDeletePostView( RetrieveUpdateDestroyAPIView ):
     permission_classes = [IsOwnerOrAdminOrReadOnly]
 
 
-class ToggleLikePostView( GenericAPIView ):
+class ToggleLikePostView(GenericAPIView):
     """
     post:
     Like/unlike a post by id.
@@ -62,13 +62,13 @@ class ToggleLikePostView( GenericAPIView ):
     def post(self, request, *args, **kwargs):
         post = self.get_object()
         if request.user not in post.liked_by.all():
-            post.liked_by.add( request.user )
+            post.liked_by.add(request.user)
         else:
-            post.liked_by.remove( request.user )
-        return Response( self.get_serializer( post ).data )
+            post.liked_by.remove(request.user)
+        return Response(self.get_serializer(post).data)
 
 
-class ListLikedPostsByCurrentUserView( ListAPIView ):
+class ListLikedPostsByCurrentUserView(ListAPIView):
     """
     get:
     List all liked posts of the currently logged in user.
@@ -79,10 +79,10 @@ class ListLikedPostsByCurrentUserView( ListAPIView ):
     def get_queryset(self):
         user = self.request.user
         if user:
-            return Post.objects.filter( liked_by__exact=user )
+            return Post.objects.filter(liked_by__exact=user)
 
 
-class ListCurrentUserPostsOfFollowingView( ListAPIView ):
+class ListCurrentUserPostsOfFollowingView(ListAPIView):
     """
     get:
     List all posts of the users the currently logged in user is following.
@@ -93,10 +93,10 @@ class ListCurrentUserPostsOfFollowingView( ListAPIView ):
     def get_queryset(self):
         user = self.request.user
         if user:
-            return Post.objects.filter( author__in=user.following.all() )
+            return Post.objects.filter(author__in=user.following.all())
 
 
-class ListPostsByUserIdView( ListAPIView ):
+class ListPostsByUserIdView(ListAPIView):
     """
     get:
     List all posts made by a user.
@@ -105,5 +105,5 @@ class ListPostsByUserIdView( ListAPIView ):
     lookup_url_kwarg = 'user_id'
 
     def get_queryset(self):
-        user = self.kwargs.get( 'user_id' )
-        return Post.objects.filter( author_id__exact=user ).order_by( '-created' )
+        user = self.kwargs.get('user_id')
+        return Post.objects.filter(author_id__exact=user).order_by('-created')

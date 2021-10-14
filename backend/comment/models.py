@@ -10,7 +10,7 @@ class Comment(models.Model):
     updated = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name='comments')
-   # liked_by = models.ManyToManyField(to=User, related_name='liked_comments', blank=True)
+    # liked_by = models.ManyToManyField(to=User, related_name='liked_comments', blank=True)
 
     def __str__(self):
         return f'Comment ID:{self.id} by {self.author}'
