@@ -229,7 +229,10 @@ db.*
 
 */__pycache__/
 
-*/migrations/*
+# excluding files in migrations folders
+/migrations/*
+# re-including init.py files in migrations folders
+!/migrations/init.py
 
 media-files
 static-files
