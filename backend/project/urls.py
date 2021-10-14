@@ -44,6 +44,8 @@ urlpatterns = [
     path('backend/api/token/verify/', jwt_views.TokenVerifyView.as_view(), name='token_refresh'),
     path('backend/api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('backend/api/social/comments/', include('comment.urls')),
+
+    path('backend/api/friends/', include('friend_request.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
