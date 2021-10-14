@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from friend_request.models import FriendList
 from post.models import Post
 from post.permissions import IsOwnerOrAdminOrReadOnly
 from post.serializers import PostSerializer
@@ -107,3 +109,24 @@ class ListPostsByUserIdView(ListAPIView):
     def get_queryset(self):
         user = self.kwargs.get('user_id')
         return Post.objects.filter(author_id__exact=user).order_by('-created')
+
+
+class PostsByFriends(GenericAPIView):
+    """
+    get:
+    List all posts made by friends of current user.
+    """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        try:
+            friends_list = FriendList.objects.get(user=user)
+            queryset = self.get_queryset()
+            queryset = queryset.filter(author__in=friends_list.friends.all())
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data)
+        except:
+            return Response('No friends found!', status=status.HTTP_204_NO_CONTENT)
