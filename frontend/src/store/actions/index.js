@@ -28,7 +28,7 @@ export const setUserClicked = (user) => {
 };
 
 export const getUserToken = (dispatch, email, password) => {
-    const url = "https://motion-team-php.propulsion-learn.ch/backend/api/token/";
+    const url = "https://motion-team-php.propulsion-learn.ch/backend/api/auth/token/";
     const headers = new Headers({
         "Content-Type": "application/json",
     });

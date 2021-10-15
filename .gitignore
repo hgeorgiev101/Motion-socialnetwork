@@ -1,4 +1,8 @@
 .idea/
+# excluding files in migrations folders
+**/migrations/*
+# re-including __init__.py files in migrations folders
+!**/migrations/__init__.py
 
 # Created by https://www.gitignore.io/api/macos,linux,django,python,pycharm
 

@@ -7,7 +7,7 @@ import {
   PostTime,
   PostContent,
   PostedImg,
-  PostedImgMultiple,
+  // PostedImgMultiple,
   PostFooterWrapper,
   LikeShareButtonsWrapper,
   NumOfLikesWrapper,
@@ -21,7 +21,7 @@ import testImg from "../../assets/default-avatar.png";
 import { useHistory } from "react-router-dom";
 import { setUserClicked } from "../../store/actions";
 import { useDispatch } from "react-redux";
-import Masonry from "react-masonry-css";
+// import Masonry from "react-masonry-css";
 import "./masonry.css";
 
 const Post = (props) => {
@@ -71,9 +71,9 @@ const Post = (props) => {
   }
 
   const postTimeDifference = timeDifference(timeNow, originalPostTime);
-  const breakpointColumnsObj = {
-    default: 2,
-  };
+  // const breakpointColumnsObj = {
+  //   default: 2,
+  // };
 
   const goToUserProfile = () => {
     // need action to put id of clicked user into store
@@ -96,21 +96,24 @@ const Post = (props) => {
         <BurgerMenu deletePost={props.deletePost} id={props.id} />
       </PostHeaderWrapper>
       <PostContent>{props.content}</PostContent>
-      {props.photos ? (
-        props.photos.length > 1 ? (
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="my-masonrypost-grid"
-            columnClassName="my-masonrypost-grid_column"
-          >
-            {props.photos.map((photo) => (
-              <PostedImgMultiple src={photo.image} alt="wat" />
-            ))}
-          </Masonry>
-        ) : (
-          <PostedImg src={props.photos[0].image} alt="wat" />
-        )
-      ) : null}
+      {/*{props.photos ? (*/}
+      {/*  props.photos.length > 1 ? (*/}
+      {/*    <Masonry*/}
+      {/*      breakpointCols={breakpointColumnsObj}*/}
+      {/*      className="my-masonrypost-grid"*/}
+      {/*      columnClassName="my-masonrypost-grid_column"*/}
+      {/*    >*/}
+      {/*      {props.photos.map((photo) => (*/}
+      {/*        <PostedImgMultiple src={photo.image} alt="wat" />*/}
+      {/*      ))}*/}
+      {/*    </Masonry>*/}
+      {/*  ) : (*/}
+      {/*    <PostedImg src={props.photos[0].image} alt="wat" />*/}
+      {/*  )*/}
+      {/*) : null}*/}
+      {props.photos ?
+          <PostedImg src={props.photos} alt="wat" />
+          : null}
       <PostFooterWrapper>
         <LikeShareButtonsWrapper onClick={() => props.likePost(props.id)}>
           {props.likedByMe ? <LikedHeartIcon /> : <HeartIcon />}

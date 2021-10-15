@@ -19,7 +19,7 @@ class ListCreatePostsView( ListCreateAPIView ):
     queryset = Post.objects.all()
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset().order_by('-created')
         search_string = self.request.query_params.get( 'search' )
         if search_string:
             queryset = queryset.filter(
