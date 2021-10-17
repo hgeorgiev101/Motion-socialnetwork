@@ -64,9 +64,8 @@ class ProfileSerializer(serializers.ModelSerializer):
                   'banner', 'location', 'about_me',
                   'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'is_followed_by_me']
         # read_only_fields = []
-
-
 # need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):

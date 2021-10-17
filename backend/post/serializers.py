@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.urls import path
 from post.models import Post
 from user.serializers import UserSerializer
 
