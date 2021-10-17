@@ -21,10 +21,12 @@ class UserSerializer(serializers.ModelSerializer):
         return Post.objects.filter(author=user).count()
 
     def get_is_followed_by_me(self, obj):
-        if self.context['request'].user not in obj.followers.all():
-            return False
-        else:
-            return True
+        request = self.context.get('request', None)
+        if request:
+            if self.context['request'].user not in obj.followers.all():
+                return False
+            else:
+                return True
 
     class Meta:
         model = User
@@ -37,6 +39,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
     posts_of_count = serializers.SerializerMethodField()
+    is_followed_by_me = serializers.SerializerMethodField()
 
     def get_followers_count(self, obj):
         return obj.followers.count()
@@ -47,11 +50,19 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_posts_of_count(self, user):
         return Post.objects.filter(author=user).count()
 
+    def get_is_followed_by_me(self, obj):
+        request = self.context.get('request', None)
+        if request:
+            if self.context['request'].user not in obj.followers.all():
+                return False
+            else:
+                return True
+
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'following', 'followers', 'job', 'avatar',
                   'banner', 'location', 'about_me',
-                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count']
+                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'is_followed_by_me']
         # read_only_fields = []
 # need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
 

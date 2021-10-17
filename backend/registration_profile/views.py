@@ -38,12 +38,11 @@ class ValidateCreateRegistrationView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            user = User(email=serializer.validated_data['email'],
-                        password=make_password(serializer.validated_data['password']),
-                        username=serializer.validated_data['username'],
-                        first_name=serializer.validated_data['first_name'],
-                        last_name=serializer.validated_data['last_name'])
-            user.save()
+            User.objects.create_user(email=serializer.validated_data['email'],
+                                     password=make_password(serializer.validated_data['password']),
+                                     username=serializer.validated_data['username'],
+                                     first_name=serializer.validated_data['first_name'],
+                                     last_name=serializer.validated_data['last_name'])
             return Response(status.HTTP_200_OK)
 
 

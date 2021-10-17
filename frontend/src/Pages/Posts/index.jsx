@@ -29,7 +29,7 @@ const Posts = (props) => {
       dispatch(setToken(tokenInLocalStorage));
       dispatch(() => getUserInfo(dispatch, tokenInLocalStorage));
       const url =
-        "https://motion.propulsion-home.ch/backend/api/social/posts/?limit=20";
+        "https://motion-team-php.propulsion-learn.ch/backend/api/social/posts/";
       const headers = new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${tokenInLocalStorage}`,
@@ -39,14 +39,14 @@ const Posts = (props) => {
       };
       fetch(url, config)
         .then((res) => res.json())
-        .then((data) => setPosts(data.results));
+        .then((data) => setPosts(data));
     } else {
       history.push("/");
     }
   };
 
   const likePost = (postId) => {
-    const url = `https://motion.propulsion-home.ch/backend/api/social/posts/toggle-like/${postId}/`;
+    const url = `https://motion-team-php.propulsion-learn.ch/backend/api/social/posts/toggle-like/${postId}/`;
     const headers = new Headers({
       Authorization: `Bearer ${tokenRedux}`,
     });
@@ -63,7 +63,7 @@ const Posts = (props) => {
   };
 
   const deletePost = (postId) => {
-    const url = `https://motion.propulsion-home.ch/backend/api/social/posts/${postId}/`;
+    const url = `https://motion-team-php.propulsion-learn.ch/backend/api/social/posts/${postId}/`;
     const headers = new Headers({
       Authorization: `Bearer ${tokenRedux}`,
     });
@@ -100,18 +100,19 @@ const Posts = (props) => {
           ? posts.map((post) => (
               <Post
                 key={post.id}
-                content={post.content}
-                avatar={post.user.avatar}
-                name={`${post.user.first_name} ${post.user.last_name}`}
+                content={post.text_content}
+                avatar={post.author.avatar}
+                name={`${post.author.first_name} ${post.author.last_name}`}
                 created={post.created}
-                photos={post.images[0] ? post.images : null}
-                likesAmmount={post.amount_of_likes}
-                likedByMe={post.logged_in_user_liked}
+                // photos={post.images[0] ? post.images : null}
+                photos={post.images ? post.images : null}
+                likesAmmount={post.like_count}
+                likedByMe={post.is_liked_by_me}
                 id={post.id}
                 likePost={likePost}
                 deletePost={deletePost}
-                username={post.user.username}
-                userID={post.user.id}
+                username={post.author.username}
+                userID={post.author.id}
               />
             ))
           : null}

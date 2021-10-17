@@ -21,8 +21,8 @@ class ListCreatePostsView(ListCreateAPIView):
     queryset = Post.objects.all()
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        search_string = self.request.query_params.get('search')
+        queryset = self.get_queryset().order_by('-created')
+        search_string = self.request.query_params.get( 'search' )
         if search_string:
             queryset = queryset.filter(
                 Q(text_content__icontains=search_string) | Q(external_link__icontains=search_string))

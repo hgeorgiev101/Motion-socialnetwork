@@ -25,7 +25,7 @@ const ProfileInfo = (props) => {
   const token = useSelector((state) => state.user.token);
 
   const followUser = () => {
-    const url = `https://motion.propulsion-home.ch/backend/api/social/followers/toggle-follow/${props.userInfo.id}/`;
+    const url = `https://motion-team-php.propulsion-learn.ch/backend/api/social/followers/toggle-follow/${props.userInfo.id}/`;
     const headers = new Headers({
       Authorization: `Bearer ${token}`,
     });
@@ -57,12 +57,12 @@ const ProfileInfo = (props) => {
             <Button
               buttonType="Small"
               title={
-                props.userInfo.logged_in_user_is_following
+                props.userInfo.is_followed_by_me
                   ? "Following"
                   : "Follow"
               }
               onClickFunction={followUser}
-              isFollowing={props.userInfo.logged_in_user_is_following}
+              isFollowing={props.userInfo.is_followed_by_me}
             />
           )}
         </ProfileColumnLeft>
@@ -92,7 +92,7 @@ const ProfileInfo = (props) => {
           </ProfileColumnRightTopRow>
           <ProfileColumnRightBottomRow>
             <UserStatsDiv>
-              <NumDiv>{props.userInfo.amount_of_posts}</NumDiv> <div>Posts</div>
+              <NumDiv>{props.userInfo.posts_of_count}</NumDiv> <div>Posts</div>
             </UserStatsDiv>
             <UserStatsDiv>
               <NumDiv>{props.userInfo.amount_of_likes}</NumDiv> <div>Likes</div>{" "}
@@ -102,11 +102,11 @@ const ProfileInfo = (props) => {
               <div>Friends</div>{" "}
             </UserStatsDiv>
             <UserStatsDiv>
-              <NumDiv>{props.userInfo.amount_of_followers}</NumDiv>{" "}
+              <NumDiv>{props.userInfo.followers_count}</NumDiv>{" "}
               <div>Followers</div>
             </UserStatsDiv>
             <UserStatsDiv>
-              <NumDiv>{props.userInfo.amount_following}</NumDiv>{" "}
+              <NumDiv>{props.userInfo.following_count}</NumDiv>{" "}
               <div>Following</div>{" "}
             </UserStatsDiv>
           </ProfileColumnRightBottomRow>

@@ -21,7 +21,7 @@ class RegistrationProfile(models.Model):
     ]
 
     code = models.IntegerField(default=code_generator)
-    email = models.EmailField(max_length=400, blank=True, null=True)
+    email = models.EmailField(max_length=400, blank=True, null=True, unique=True)
     status = models.IntegerField(choices=status_choices, default=1)
 
     def __str__(self):
