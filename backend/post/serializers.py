@@ -25,7 +25,9 @@ class PostSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['author'] = UserSerializer(instance.author, many=False, context=self.context).data
-        representation['images'] = self.context['request'].build_absolute_uri(instance.images.url)
+        domain_name =  'https://motion-team-php.propulsion-learn.ch'
+        full_path = domain_name + instance.images.url
+        representation['images'] = full_path
         if representation['shared_post'] is not None:
             shared_url = self.context['request'].build_absolute_uri()
 
