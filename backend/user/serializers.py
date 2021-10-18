@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     following_count = serializers.SerializerMethodField()
     posts_of_count = serializers.SerializerMethodField()
     is_followed_by_me = serializers.SerializerMethodField()
+    avatar_url = serializers.SerializerMethodField()
 
     def get_followers_count(self, obj):
         return obj.followers.count()
@@ -28,11 +29,21 @@ class UserSerializer(serializers.ModelSerializer):
             else:
                 return True
 
+    def get_avatar_url(self, obj):
+        domain_name = 'https://motion-team-php.propulsion-learn.ch'
+        full_path = domain_name + obj.avatar.url
+        return full_path
+
     class Meta:
         model = User
         fields = ['is_followed_by_me', 'id', 'username', 'first_name', 'last_name', 'email',
                   'job', 'avatar', 'banner', 'location', 'about_me',
-                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count']
+                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'avatar_url']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['avatar'] = representation.pop('avatar_url')
+        return representation
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -40,6 +51,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     following_count = serializers.SerializerMethodField()
     posts_of_count = serializers.SerializerMethodField()
     is_followed_by_me = serializers.SerializerMethodField()
+    avatar_url = serializers.SerializerMethodField()
 
     def get_followers_count(self, obj):
         return obj.followers.count()
@@ -58,13 +70,25 @@ class ProfileSerializer(serializers.ModelSerializer):
             else:
                 return True
 
+    def get_avatar_url(self, obj):
+        domain_name = 'https://motion-team-php.propulsion-learn.ch'
+        full_path = domain_name + obj.avatar.url
+        return full_path
+
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'following', 'followers', 'job', 'avatar',
                   'banner', 'location', 'about_me',
-                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'is_followed_by_me']
+                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'is_followed_by_me',
+                  'avatar_url']
         # read_only_fields = []
-# need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
+
+    # need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['avatar'] = representation.pop('avatar_url')
+        return representation
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
