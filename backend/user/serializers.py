@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     following_count = serializers.SerializerMethodField()
     posts_of_count = serializers.SerializerMethodField()
     is_followed_by_me = serializers.SerializerMethodField()
-    avatar_url = serializers.SerializerMethodField()
+    # avatar_url = serializers.SerializerMethodField()
 
     def get_followers_count(self, obj):
         return obj.followers.count()
@@ -29,23 +29,26 @@ class UserSerializer(serializers.ModelSerializer):
             else:
                 return True
 
-    def get_avatar_url(self, obj):
-        try:
-            domain_name = 'https://motion-team-php.propulsion-learn.ch'
-            full_path = domain_name + obj.avatar.url
-            return full_path
-        except:
-            return None
+    # def get_avatar_url(self, obj):
+    #     try:
+    #         domain_name = 'https://motion-team-php.propulsion-learn.ch'
+    #         full_path = domain_name + obj.avatar.url
+    #         return full_path
+    #     except:
+    #         return None
 
     class Meta:
         model = User
         fields = ['is_followed_by_me', 'id', 'username', 'first_name', 'last_name', 'email',
                   'job', 'avatar', 'banner', 'location', 'about_me',
-                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'avatar_url']
+                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['avatar'] = representation.pop('avatar_url')
+        # representation['avatar'] = representation.pop('avatar_url')
+        avatar_pic = representation.get('avatar', None)
+        if avatar_pic is not None:
+            representation['avatar'] = self.context['request'].build_absolute_uri(instance.avatar.url)
         return representation
 
 
@@ -54,7 +57,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     following_count = serializers.SerializerMethodField()
     posts_of_count = serializers.SerializerMethodField()
     is_followed_by_me = serializers.SerializerMethodField()
-    avatar_url = serializers.SerializerMethodField()
+    # avatar_url = serializers.SerializerMethodField()
 
     def get_followers_count(self, obj):
         return obj.followers.count()
@@ -73,26 +76,28 @@ class ProfileSerializer(serializers.ModelSerializer):
             else:
                 return True
 
-    def get_avatar_url(self, obj):
-        try:
-            domain_name = 'https://motion-team-php.propulsion-learn.ch'
-            full_path = domain_name + obj.avatar.url
-            return full_path
-        except:
-            return None
+    # def get_avatar_url(self, obj):
+    #     try:
+    #         domain_name = 'https://motion-team-php.propulsion-learn.ch'
+    #         full_path = domain_name + obj.avatar.url
+    #         return full_path
+    #     except:
+    #         return None
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'following', 'followers', 'job', 'avatar',
                   'banner', 'location', 'about_me',
-                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'is_followed_by_me',
-                  'avatar_url']
+                  'things_user_likes', 'followers_count', 'following_count', 'posts_of_count', 'is_followed_by_me']
         # read_only_fields = []
 
     # need to add "is friends", "is rejected", "received FR", "sent FR", "# friends"
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['avatar'] = representation.pop('avatar_url')
+        # representation['avatar'] = representation.pop('avatar_url')
+        avatar_pic = representation.get('avatar', None)
+        if avatar_pic is not None:
+            representation['avatar'] = self.context['request'].build_absolute_uri(instance.avatar.url)
         return representation
 
 
@@ -101,5 +106,5 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # The default result (access/refresh tokens)
         data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
         # Custom data you want to include
-        data.update({'user': ProfileSerializer(self.user, many=False).data})
+        data.update({'user': ProfileSerializer(self.user, context=self.context, many=False).data})
         return data
