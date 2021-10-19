@@ -30,9 +30,12 @@ class UserSerializer(serializers.ModelSerializer):
                 return True
 
     def get_avatar_url(self, obj):
-        domain_name = 'https://motion-team-php.propulsion-learn.ch'
-        full_path = domain_name + obj.avatar.url
-        return full_path
+        try:
+            domain_name = 'https://motion-team-php.propulsion-learn.ch'
+            full_path = domain_name + obj.avatar.url
+            return full_path
+        except:
+            return None
 
     class Meta:
         model = User
@@ -71,10 +74,12 @@ class ProfileSerializer(serializers.ModelSerializer):
                 return True
 
     def get_avatar_url(self, obj):
-        domain_name = 'https://motion-team-php.propulsion-learn.ch'
-        full_path = domain_name + obj.avatar.url
-        return full_path
-
+        try:
+            domain_name = 'https://motion-team-php.propulsion-learn.ch'
+            full_path = domain_name + obj.avatar.url
+            return full_path
+        except:
+            return None
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'following', 'followers', 'job', 'avatar',

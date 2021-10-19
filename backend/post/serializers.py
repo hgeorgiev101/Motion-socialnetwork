@@ -18,9 +18,12 @@ class PostSerializer(serializers.ModelSerializer):
             return True
 
     def get_image_url(self, obj):
-        domain_name = 'https://motion-team-php.propulsion-learn.ch'
-        full_path = domain_name + obj.images.url
-        return full_path
+        try:
+            domain_name = 'https://motion-team-php.propulsion-learn.ch'
+            full_path = domain_name + obj.images.url
+            return full_path
+        except:
+            return None
 
     class Meta:
         model = Post
