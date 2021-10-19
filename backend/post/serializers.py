@@ -6,7 +6,7 @@ from user.serializers import UserSerializer
 class PostSerializer(serializers.ModelSerializer):
     like_count = serializers.SerializerMethodField()
     is_liked_by_me = serializers.SerializerMethodField()
-    # image_url = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
 
     def get_like_count(self, obj):
         return obj.liked_by.count()
@@ -17,27 +17,24 @@ class PostSerializer(serializers.ModelSerializer):
         else:
             return True
 
-    # def get_image_url(self, obj):
-    #     try:
-    #         domain_name = 'https://motion-team-php.propulsion-learn.ch'
-    #         full_path = domain_name + obj.images.url
-    #         return full_path
-    #     except:
-    #         return None
+    def get_image_url(self, obj):
+        try:
+            domain_name = 'https://motion-team-php.propulsion-learn.ch'
+            full_path = domain_name + obj.images.url
+            return full_path
+        except:
+            return None
 
     class Meta:
         model = Post
         fields = ['id', 'text_content', 'created', 'author', 'like_count', 'is_liked_by_me', 'images', 'external_link',
-                  'shared_post', 'is_parent']
+                  'shared_post', 'is_parent', 'image_url']
         read_only_fields = ['author']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['author'] = UserSerializer(instance.author, many=False, context=self.context).data
-        # representation['images'] = representation.pop('image_url')
-        images_pic = representation.get('images', None)
-        if images_pic is not None:
-            representation['images'] = self.context['request'].build_absolute_uri(instance.images.url)
+        representation['images'] = representation.pop('image_url')
         if representation['shared_post'] is not None:
             shared_url = self.context['request'].build_absolute_uri()
 

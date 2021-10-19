@@ -51,3 +51,5 @@ urlpatterns = [
 
     path('backend/api/friends/', include('friend_request.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
